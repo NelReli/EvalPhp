@@ -1,5 +1,6 @@
 <?php
     require_once(__DIR__ . "/partials/head.php");
+    var_dump($_SESSION['user']);
     if(isset($_SESSION['user'])){
         ?>
             <h1>Bienvenue <?= $_SESSION['user']['pseudo'] ?></h1>

@@ -19,7 +19,7 @@
         </a>
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 text-white">
             
-            <!-- sortir les liens inscription et connexion de la condition  -->
+            
             <?php
             if(isset($_SESSION['user'])){ ?>
                 <li class="nav-item">
@@ -33,7 +33,7 @@
                 <a class="nav-link text-white" href="connection"><i class="fa-solid fa-circle-plus"></i> Connexion</a>
             </li>
             <?php
-                if($_SESSION['user']['role']== "Admin"){
+                if(isset($_SESSION['user']['role']) && ($_SESSION['user']['role'] == "Admin")){
                     ?>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="users"><i class="fa-solid fa-circle-plus"></i> Utilisateurs</a>

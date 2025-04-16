@@ -19,13 +19,13 @@ if(isset($_POST['mail'])){
         $user = $userStatement->fetch();
 
         if(!$user){
-            redirectToRoute('/register');
+            redirectToRoute('register');
         } else {
             //Pour vérifier le mot de passe haché, on utilise password_verif
             //Dans la variable $verif on auras TRUE/FALSE 
             $verif = password_verify($password, $user['password']);
             if(!$verif){
-                redirectToRoute('/connection');
+                redirectToRoute('connection');
             }else{
 
                 $userQuery = "SELECT `user`.`id`, `user`.`pseudo`, `user`.`mail`,`user`.`register_date`, `user`.`id_role`, `role`.`name` 
