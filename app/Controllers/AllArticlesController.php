@@ -10,7 +10,7 @@ if(isset($_GET['id'])){
     $queryStatement = $mysqlClient->prepare($query);
     $queryStatement->bindValue(':id_subject', $subject);
     $queryStatement->execute();
-    $articles = $queryStatement->fetchAll();
+    $article = $queryStatement->fetchAll();
 
 
 
