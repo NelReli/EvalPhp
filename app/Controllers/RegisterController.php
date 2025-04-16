@@ -46,7 +46,7 @@ if(isset($_POST['pseudo'])){
 
         $queryStatement->execute();
 
-        redirectToRoute('/');
+        redirectToRoute('/home');
 
         }
     }

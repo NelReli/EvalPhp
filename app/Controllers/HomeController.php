@@ -1,5 +1,4 @@
 <?php
-
     $query = "SELECT `id`, `title`, `description` FROM `subject`";
     $queryStatement = $mysqlClient->prepare($query);
     $queryStatement->execute();

@@ -1,3 +1,4 @@
+
 <?php
 require_once (__DIR__ . "/function.php");
 require_once (__DIR__ . "/db.php");
@@ -6,6 +7,8 @@ require_once (__DIR__ . "/db.php");
 // Cette partie extrait uniquement le chemin de l'URL (sans les paramètres GET ou les fragments)
 $uri = parse_url($_SERVER['REQUEST_URI'])['path'];
 
+$uri = str_replace('/EvalPhp', '', $uri);
+
 
 // Définition des routes
 // Ce tableau associe des chemins d'URI à des fichiers de contrôleurs spécifiques
@@ -13,9 +16,10 @@ $uri = parse_url($_SERVER['REQUEST_URI'])['path'];
 $routes = [
     //La page d'accueil
     '/' => 'HomeController.php',
+    '/404' => '404Controller.php',
     //Connexion déconnexion inscription
     '/register' => 'RegisterController.php',
-    '/connection' => 'ConnectionsController.php',
+    '/connection' => 'ConnectionController.php', // y a pas de "s"a ConnectionsController.php
     '/logout' => 'LogoutController.php',
     //Les utilisateurs
     '/users' => 'UsersController.php',
@@ -40,5 +44,5 @@ if (array_key_exists($uri, $routes)) {
     // http_response_code(404) indique que la page n'a pas été trouvée
     http_response_code(404);
     // Inclusion du fichier 404.php pour gérer l'affichage d'une page d'erreur personnalisée
-    require_once(__DIR__ . '/../app/Controllers/404Controller.php');
+    require_once(__DIR__ . '/../app/Controllers/' . $routes['/404']);
 }

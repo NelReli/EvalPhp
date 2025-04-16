@@ -13,7 +13,7 @@ if(isset($_GET['id'])){
     $article = $queryStatement->fetch();
 
     if(isset($_POST['idDelete'])){
-        $id_article = htmlspecialchars($_POST['idDelete']);
+        $id_article = htmlspecialchars($_POST['idDelete']); 
         $queryDelete = "DELETE FROM `article` WHERE `id` = :id_article ";
         $queryStatementDelete = $mysqlClient->prepare($queryDelete);
         $queryStatementDelete->bindValue(':id_article', $id_article);

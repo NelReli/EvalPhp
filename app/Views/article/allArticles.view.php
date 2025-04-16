@@ -20,7 +20,7 @@
                     }
                     ?>
                     </div>
-           
+
                 <div class="card-body">
                     <p class="card-text"><?= $article['pseudo'] ?></p>
                     <a href="/article?idArticle=<?= $article['id'] ?>" class="btn colorPink">Aller voir l'article</a>
