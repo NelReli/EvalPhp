@@ -26,11 +26,11 @@ if(isset($_GET['subject']) && isset($_SESSION['user'])){
 
             $lastId = $mysqlClient->lastInsertId();
     
-            redirectToRoute('/article?id=' . $lastId);
+            redirectToRoute('/EvalPhp/article?id=' . $lastId);
         }
     }
 }else {
-    redirectToRoute('/');
+    redirectToRoute('/EvalPhp');
 }
 
 

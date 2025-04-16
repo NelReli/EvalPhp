@@ -46,7 +46,7 @@ if(isset($_POST['mail'])){
                     'idUser' => $user['id']
                 ];
 
-                redirectToRoute('/');
+                redirectToRoute('/EvalPhp');
             }
         }
 

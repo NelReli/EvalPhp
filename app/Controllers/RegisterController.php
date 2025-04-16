@@ -29,7 +29,7 @@ if(isset($_POST['pseudo'])){
 
         if($user){
             //s'il exist on renvoie vers /
-            redirectToRoute('/');
+            redirectToRoute('/EvalPhp');
         } else {
         //Hash le mot de passe :
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
@@ -46,7 +46,7 @@ if(isset($_POST['pseudo'])){
 
         $queryStatement->execute();
 
-        redirectToRoute('/home');
+        redirectToRoute('/EvalPhp');
 
         }
     }

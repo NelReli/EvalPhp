@@ -18,7 +18,7 @@ if(isset($_GET['id'])){
         $queryStatementDelete = $mysqlClient->prepare($queryDelete);
         $queryStatementDelete->bindValue(':id_article', $id_article);
         $queryStatementDelete->execute();
-        redirectToRoute('/');
+        redirectToRoute('/EvalPhp');
     }
 
 }

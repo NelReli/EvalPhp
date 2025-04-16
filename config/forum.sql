@@ -1,157 +1,112 @@
--- phpMyAdmin SQL Dump
--- version 5.1.1deb5ubuntu1
--- https://www.phpmyadmin.net/
---
--- Hôte : localhost:3306
--- Généré le : mer. 16 avr. 2025 à 11:37
--- Version du serveur : 8.0.41-0ubuntu0.22.04.1
--- Version de PHP : 8.1.2-1ubuntu2.20
+-- S'assurer qu'on utilise le bon moteur de stockage
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
+SET FOREIGN_KEY_CHECKS = 0;
+ 
+-- Supprimer les tables si elles existent déjà
 
+DROP TABLE IF EXISTS `article`;
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+DROP TABLE IF EXISTS `subject`;
 
---
--- Base de données : `forum`
---
+DROP TABLE IF EXISTS `user`;
 
--- --------------------------------------------------------
+DROP TABLE IF EXISTS `role`;
+ 
+-- Activer les contraintes ensuite
 
---
--- Structure de la table `article`
---
-
-CREATE TABLE `article` (
-  `id` int UNSIGNED NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `content` text NOT NULL,
-  `creation_date` datetime DEFAULT CURRENT_TIMESTAMP,
-  `modification_date` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `id_user` int UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `role`
---
+SET FOREIGN_KEY_CHECKS = 1;
+ 
+-- Table role
 
 CREATE TABLE `role` (
-  `id` int UNSIGNED NOT NULL,
-  `name` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- --------------------------------------------------------
+    `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
---
--- Structure de la table `subject`
---
+    `name` VARCHAR(50) NOT NULL UNIQUE
 
-CREATE TABLE `subject` (
-  `id` int UNSIGNED NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `description` text,
-  `creation_date` datetime DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `user`
---
+) ENGINE=InnoDB;
+ 
+-- Table user
 
 CREATE TABLE `user` (
-  `id` int UNSIGNED NOT NULL,
-  `pseudo` varchar(100) NOT NULL,
-  `mail` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `register_date` datetime DEFAULT CURRENT_TIMESTAMP,
-  `id_role` int UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Index pour les tables déchargées
---
+    `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
---
--- Index pour la table `article`
---
-ALTER TABLE `article`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id_user` (`id_user`);
+    `pseudo` VARCHAR(100) NOT NULL,
 
---
--- Index pour la table `role`
---
-ALTER TABLE `role`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `name` (`name`);
+    `mail` VARCHAR(191) NOT NULL UNIQUE,
 
---
--- Index pour la table `subject`
---
-ALTER TABLE `subject`
-  ADD PRIMARY KEY (`id`);
+    `password` VARCHAR(255) NOT NULL,
 
---
--- Index pour la table `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `mail` (`mail`),
-  ADD KEY `id_role` (`id_role`);
+    `register_date` DATETIME DEFAULT CURRENT_TIMESTAMP,
 
---
--- AUTO_INCREMENT pour les tables déchargées
---
+    `id_role` INT UNSIGNED,
 
---
--- AUTO_INCREMENT pour la table `article`
---
-ALTER TABLE `article`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+    FOREIGN KEY (`id_role`) REFERENCES `role`(`id`)
 
---
--- AUTO_INCREMENT pour la table `role`
---
-ALTER TABLE `role`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+        ON DELETE SET NULL
 
---
--- AUTO_INCREMENT pour la table `subject`
---
-ALTER TABLE `subject`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+        ON UPDATE CASCADE
 
---
--- AUTO_INCREMENT pour la table `user`
---
-ALTER TABLE `user`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+) ENGINE=InnoDB;
+ 
+-- Table subject
 
---
--- Contraintes pour les tables déchargées
---
+CREATE TABLE `subject` (
 
---
--- Contraintes pour la table `article`
---
-ALTER TABLE `article`
-  ADD CONSTRAINT `article_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`) ON DELETE CASCADE;
+    `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 
---
--- Contraintes pour la table `user`
---
-ALTER TABLE `user`
-  ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`id_role`) REFERENCES `role` (`id`) ON DELETE RESTRICT;
-COMMIT;
+    `title` VARCHAR(255) NOT NULL,
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+    `description` TEXT,
+
+    `creation_date` DATETIME DEFAULT CURRENT_TIMESTAMP
+
+) ENGINE=InnoDB;
+ 
+-- Table article
+
+CREATE TABLE `article` (
+
+    `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    `title` VARCHAR(255) NOT NULL,
+
+    `content` TEXT NOT NULL,
+
+    `creation_date` DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    `modification_date` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    `id_subject` INT UNSIGNED NOT NULL,
+
+    `id_user` INT UNSIGNED NOT NULL,
+
+    FOREIGN KEY (`id_subject`) REFERENCES `subject`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+
+    FOREIGN KEY (`id_user`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
+
+) ENGINE=InnoDB;
+ 
+-- Données initiales
+
+INSERT INTO `role` (`name`) VALUES ('Admin'), ('User');
+ 
+INSERT INTO `user` (`pseudo`, `mail`, `password`, `id_role`) VALUES
+
+('Alice', 'alice@example.com', 'hashed_pw1', 1),
+
+('Bob', 'bob@example.com', 'hashed_pw2', 1);
+ 
+INSERT INTO `subject` (`title`, `description`) VALUES
+
+('PHP', 'Programmation côté serveur'),
+
+('SQL', 'Langage de base de données');
+ 
+INSERT INTO `article` (`title`, `content`, `id_subject`, `id_user`) VALUES
+
+('Introduction à PHP', 'Contenu PHP', 1, 1),
+
+('Les jointures SQL', 'Contenu SQL', 2, 2);
+ 

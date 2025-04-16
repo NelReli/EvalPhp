@@ -12,7 +12,7 @@ if(isset($_GET['id'])){
     $response = $queryStatement->fetch();
 
     if(!$response){
-        redirectToRoute('/');
+        redirectToRoute('/EvalPhp');
     }
 
     require_once (__DIR__ . '/../Views/userProfile.view.php');

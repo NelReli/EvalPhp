@@ -26,7 +26,7 @@ if(isset($_POST['title'])){
 
         $queryStatement->execute();
 
-        redirectToRoute('/');
+        redirectToRoute('/EvalPhp');
 
         }
     }

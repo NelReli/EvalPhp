@@ -1,5 +1,5 @@
 <?php
-    $query = "SELECT `id`, `title`, `description` FROM `subject`";
+    $query = "SELECT `id`, `title`, `description`, `creation_date`  FROM `subject`";
     $queryStatement = $mysqlClient->prepare($query);
     $queryStatement->execute();
     $subjects = $queryStatement->fetchAll();
